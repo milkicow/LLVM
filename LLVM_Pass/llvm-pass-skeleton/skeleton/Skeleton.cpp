@@ -69,39 +69,39 @@ virtual bool runOnFunction(Function &F) {
 	Logger->get_stream() << "color=blue\n}\n";
 
 	// Prepare builder for IR modification
-	/*LLVMContext &Ctx = F.getContext();
+	LLVMContext &Ctx = F.getContext();
 	IRBuilder<> builder(Ctx);
 	Type *retType = Type::getVoidTy(Ctx);
 
 	// Prepare funcStartLogger function
-	std::vector<Type *> funcStartParamTypes = { builder.getInt8Ty()->getPointerTo(), builder.getInt8Ty()->getPointerTo(), Type::getInt32Ty(Ctx)};
-	FunctionType *funcStartLogFuncType = FunctionType::get(retType, funcStartParamTypes, false);
-	FunctionCallee funcStartLogFunc = F.getParent()->getOrInsertFunction("funcStartLogger", funcStartLogFuncType);
+	// std::vector<Type *> funcStartParamTypes = { builder.getInt8Ty()->getPointerTo(), builder.getInt8Ty()->getPointerTo(), Type::getInt32Ty(Ctx)};
+	// FunctionType *funcStartLogFuncType = FunctionType::get(retType, funcStartParamTypes, false);
+	// FunctionCallee funcStartLogFunc = F.getParent()->getOrInsertFunction("funcStartLogger", funcStartLogFuncType);
 
 	// Insert a call to funcStartLogger function in the function begin
-	BasicBlock &entryBB = F.getEntryBlock();
-	builder.SetInsertPoint(&entryBB.front());
-	Value *funcName = builder.CreateGlobalStringPtr(F.getName());
-	Value *args[] = {funcName};
-	builder.CreateCall(funcStartLogFunc, args);
+	// BasicBlock &entryBB = F.getEntryBlock();
+	// builder.SetInsertPoint(&entryBB.front());
+	// Value *funcName = builder.CreateGlobalStringPtr(F.getName());
+	// Value *args[] = {funcName};
+	// builder.CreateCall(funcStartLogFunc, args);
 
 	// Prepare binOptLogger function
 	std::vector<Type *> binOptParamTypes = {Type::getInt32Ty(Ctx), Type::getInt32Ty(Ctx), Type::getInt32Ty(Ctx),
-										    builder.getInt8Ty()->getPointerTo(), builder.getInt8Ty()->getPointerTo(), Type::getInt32Ty(Ctx)};
+										    builder.getInt8Ty()->getPointerTo(), Type::getInt32Ty(Ctx)};
 	
 	FunctionType *binOptLogFuncType = FunctionType::get(retType, binOptParamTypes, false);
 	FunctionCallee binOptLogFunc = F.getParent()->getOrInsertFunction("binOptLogger", binOptLogFuncType);
 
 	// Prepare callLogger function
-	std::vector<Type *> callParamTypes = {builder.getInt8Ty()->getPointerTo(), builder.getInt8Ty()->getPointerTo(), Type::getInt32Ty(Ctx)};
+	//std::vector<Type *> callParamTypes = {builder.getInt8Ty()->getPointerTo(), builder.getInt8Ty()->getPointerTo(), Type::getInt32Ty(Ctx)};
 
-	FunctionType *callLogFuncType = FunctionType::get(retType, callParamTypes, false);
-	FunctionCallee callLogFunc = F.getParent()->getOrInsertFunction("callLogger", callLogFuncType);
+	// FunctionType *callLogFuncType = FunctionType::get(retType, callParamTypes, false);
+	// FunctionCallee callLogFunc = F.getParent()->getOrInsertFunction("callLogger", callLogFuncType);
 
 	// Prepare funcEndLogger function
-	std::vector<Type *> funcEndParamTypes = { builder.getInt8Ty()->getPointerTo(), Type::getInt32Ty(Ctx) };
-	FunctionType *funcEndLogFuncType = FunctionType::get(retType, funcEndParamTypes, false);
-	FunctionCallee funcEndLogFunc = F.getParent()->getOrInsertFunction("funcEndLogger", funcEndLogFuncType);
+	// std::vector<Type *> funcEndParamTypes = { builder.getInt8Ty()->getPointerTo(), Type::getInt32Ty(Ctx) };
+	// FunctionType *funcEndLogFuncType = FunctionType::get(retType, funcEndParamTypes, false);
+	// FunctionCallee funcEndLogFunc = F.getParent()->getOrInsertFunction("funcEndLogger", funcEndLogFuncType);
 
 	// Insert loggers for call, binOpt and ret instructions
 	for (auto &B : F) {
@@ -115,36 +115,36 @@ virtual bool runOnFunction(Function &F) {
 				// Insert a call to binOptLogFunc function
 				Value *lhs = op->getOperand(0);
 				Value *rhs = op->getOperand(1);
-				Value *funcName = builder.CreateGlobalStringPtr(F.getName());
+				//Value *funcName = builder.CreateGlobalStringPtr(F.getName());
 				Value *opName = builder.CreateGlobalStringPtr(op->getOpcodeName());
-				Value *args[] = {op, lhs, rhs, opName, funcName, valueAddr};
+				Value *args[] = {op, lhs, rhs, opName, valueAddr};
 				builder.CreateCall(binOptLogFunc, args);
 			}
-			if (auto *call = dyn_cast<CallInst>(&I)) {
-				// Insert before call
-				builder.SetInsertPoint(call);
+			// if (auto *call = dyn_cast<CallInst>(&I)) {
+			// 	// Insert before call
+			// 	builder.SetInsertPoint(call);
 
-				// Insert a call to callLogger function
-				Function *callee = call->getCalledFunction();
-				if (callee && !isFuncLogger(callee->getName())) {
-					Value *calleeName = builder.CreateGlobalStringPtr(callee->getName());
-					Value *funcName = builder.CreateGlobalStringPtr(F.getName());
-					Value *args[] = {funcName, calleeName, valueAddr};
-					builder.CreateCall(callLogFunc, args);
-				}
-			}
-			if (auto *ret = dyn_cast<ReturnInst>(&I)) {
-				// Insert before ret
-				builder.SetInsertPoint(ret);
+			// 	// Insert a call to callLogger function
+			// 	Function *callee = call->getCalledFunction();
+			// 	if (callee && !isFuncLogger(callee->getName())) {
+			// 		Value *calleeName = builder.CreateGlobalStringPtr(callee->getName());
+			// 		Value *funcName = builder.CreateGlobalStringPtr(F.getName());
+			// 		Value *args[] = {funcName, calleeName, valueAddr};
+			// 		builder.CreateCall(callLogFunc, args);
+			// 	}
+			// }
+			// if (auto *ret = dyn_cast<ReturnInst>(&I)) {
+			// 	// Insert before ret
+			// 	builder.SetInsertPoint(ret);
 
-				// Insert a call to funcEndLogFunc function
-				Value *funcName = builder.CreateGlobalStringPtr(F.getName());
-				Value *args[] = {funcName, valueAddr};
-				builder.CreateCall(funcEndLogFunc, args);
-			}
+			// 	// Insert a call to funcEndLogFunc function
+			// 	Value *funcName = builder.CreateGlobalStringPtr(F.getName());
+			// 	Value *args[] = {funcName, valueAddr};
+			// 	builder.CreateCall(funcEndLogFunc, args);
+			// }
 		}
 	}
-	*/
+	
 	
 	return true;
 }
