@@ -7,5 +7,5 @@ int func(int arg1, int arg2) {
 }
 
 int main() {
-    return func(func(3, 4), func(5, 6)) + func(3, 4);
+    return func(3, 4);
 }

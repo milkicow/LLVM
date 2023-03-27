@@ -21,75 +21,52 @@ bool isFuncLogger(StringRef name) {
 }
 
 virtual bool runOnFunction(Function &F) {
-	// if (isFuncLogger(F.getName())) return false;
-
-	// llvm::outs() << "\nSTART";
-	// Logger* Logger = Logger::get_instance("log.dot");
-
-	// // Dump Function
-	// Logger->get_stream() << "In a function called " << F.getName() << "\n";
-	// F.print(Logger->get_stream());
-	// Logger->get_stream() << "\n";
-
-
-	// //Dump function uses
-	// for (auto &U : F.uses()) {
-	// 	User *user = U.getUser();
-	// 	//outs() << "[DOT] " << (uint64_t)(&F) << " -> " << (uint64_t)user << "\n";
-	// 	Logger->get_stream() << (uint64_t)user ;
-	// 	Logger->get_stream() << "[label = \""; user->print(Logger->get_stream(), true); Logger->get_stream() << "\"]";
-	// 	Logger->get_stream() << "\n";
-	// 	Logger->get_stream() << (uint64_t)(&F) << " -> " << (uint64_t)user << "\n";
-	// }
-
-	// for (auto &B : F) {
-	// 	// Dump BasicBlocks
-	// 	// outs() << "Basic block:\n";
-	// 	// B.print(llvm::outs());
-	// 	// outs() << "\n";
-	// 	for (auto &I : B) {
-	// 		// Dump Instructions
-	// 		// Dump instruction uses
-	// 		for (auto &U : I.uses()) {
-	// 			User *user = U.getUser();
-	// 			Logger->get_stream() << (uint64_t)user << "[label = \""; user->print(Logger->get_stream(), true); Logger->get_stream() << "\"]\n";
-	// 			Logger->get_stream() << (uint64_t)(&I) << " -> " << (uint64_t)user << "\n";
-	// 		}
-	// 	}
-	// }
-
 	if (isFuncLogger(F.getName())) return false;
 	Logger* Logger = Logger::get_instance("log.dot");
 
-	//auto tmp = F.front().front();
-	auto tmp = F.begin()->begin();
-	for (auto B_it = F.begin(); B_it != F.end(); ++B_it)
-	//for (auto &B : F) 
-	{
+	Logger->get_stream() << "subgraph cluster_" << F.getName() << 
+	"{\nnode [style=filled];\n" <<
+	"label = \"" << F.getName() << "\"\n";
+
+	auto number_of_basic_blog = 0;
+	for (auto B_it = F.begin(); B_it != F.end(); ++B_it) {
 		// Dump BasicBlocks
-		// outs() << "Basic block:\n";
-		// B.print(llvm::outs());
-		// outs() << "\n";
+		Logger->get_stream() << "subgraph cluster_" << number_of_basic_blog <<
+		"{\nstyle=filled;\ncolor=pink;\nnode [style=filled,color=white];\n";
 		for (auto I_it = B_it->begin(); I_it != B_it->end(); ++I_it)
-		//for (auto &I : B) 
 		{
 			// Dump Instructions
 			Logger->get_stream() << (uint64_t)(&*I_it) << "[label = \"";
 			I_it->print(Logger->get_stream(), true);
-			Logger->get_stream() << "\"]\n";
+			Logger->get_stream() << "\", ]\n";
+		}
+		Logger->get_stream() << "label = \"process ";
+		B_it->printAsOperand(Logger->get_stream(), false);
+		Logger->get_stream() << "\"\n";
+		++number_of_basic_blog;
+		Logger->get_stream() << "}\n";
 
-			Logger->get_stream() << (uint64_t)(&*tmp) << " -> " << (uint64_t)(&*I_it) << " [color = \"blue\"]" << "\n";
+		auto tmp = F.begin()->begin();
+		for (auto I_it = B_it->begin(); I_it != B_it->end(); ++I_it) {
+			Logger->get_stream() << (uint64_t)(&*tmp) << " -> " << (uint64_t)(&*I_it) << "[color = \"purple\", style = \"dotted\"]" << "\n";
 			tmp = I_it;
+		}
+		Logger->get_stream() << "\n";
+	}
+
+	for (auto B_it = F.begin(); B_it != F.end(); ++B_it) {
+		for (auto I_it = B_it->begin(); I_it != B_it->end(); ++I_it) {
 			// Dump instruction uses
 			for (auto &U : I_it->uses()) {
 				User *user = U.getUser();
-				Logger->get_stream() << (uint64_t)(&*I_it) << " -> " << (uint64_t)user << "\n";
-				// "-> [color=white]"
-				//Logger->get_stream() << (uint64_t)user << "[label = \""; user->print(Logger->get_stream(), true); Logger->get_stream() << "\"]\n";
+				Logger->get_stream() << (uint64_t)(&*I_it) << " -> " << (uint64_t)user << " [label = \"";
+				I_it->printAsOperand(Logger->get_stream(), false);
+				Logger->get_stream() << "\"color = \"darkblue\"]" << "\n";
 			}
 		}
 	}
 
+	Logger->get_stream() << "color=blue\n}\n";
 
 	// Prepare builder for IR modification
 	/*LLVMContext &Ctx = F.getContext();
