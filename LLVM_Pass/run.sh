@@ -4,4 +4,4 @@ make
 cd ../../
 clang-11 -Xclang -load -Xclang llvm-pass-skeleton/build/skeleton/libSkeletonPass.so fact.c -emit-llvm -S -o fact.ll
 clang-11 -Xclang -load -Xclang llvm-pass-skeleton/build/skeleton/libSkeletonPass.so fact.c log.cpp
-./a.out 4
+./a.out 4 > dynamic_info.txt
