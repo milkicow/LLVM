@@ -1,9 +1,13 @@
+test_prog='fact' # write only name without extension
+test_prog.c="$test_prog.c"
+test_prog.ll="${test_prog}.ll"
+
 cd llvm-pass-skeleton && cd build
 CC=clang-11 CXX=clang++-11 cmake ..
 make
 cd ../../
-clang-11 -Xclang -load -Xclang llvm-pass-skeleton/build/skeleton/libSkeletonPass.so test_progs/fact.c -emit-llvm -S -o fact.ll
-clang-11 -Xclang -load -Xclang llvm-pass-skeleton/build/skeleton/libSkeletonPass.so test_progs/fact.c log.cpp
+clang-11 -Xclang -load -Xclang llvm-pass-skeleton/build/skeleton/libSkeletonPass.so test_progs/$test_prog.c -emit-llvm -S -o $test_prog.ll
+clang-11 -Xclang -load -Xclang llvm-pass-skeleton/build/skeleton/libSkeletonPass.so test_progs/$test_prog.c log.cpp
 ./a.out 4 > info/dynamic_info.txt
 
 cd Connector 
