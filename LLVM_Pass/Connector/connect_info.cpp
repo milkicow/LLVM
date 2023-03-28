@@ -33,7 +33,7 @@ void Connector::pick_out_dynamic_info() {
 
 void Connector::connect_static_dynamic() {
 
-    final_info_.open("../info.dot", std::ios_base::out);
+    final_info_.open("../info/info.dot", std::ios_base::out);
 
     if (!final_info_.is_open())   { throw std::runtime_error("can't open file: \"final_info_\"\n");   }
     if (!static_info_.is_open())  { throw std::runtime_error("can't open file: \"static_info_\"\n");  }
@@ -65,7 +65,7 @@ void Connector::connect_static_dynamic() {
 
 int main() {
 
-    Connector connector("../static_info.txt", "../dynamic_info.txt");
+    Connector connector("../info/static_info.txt", "../info/dynamic_info.txt");
     try {
         connector.pick_out_dynamic_info();
         connector.connect_static_dynamic();

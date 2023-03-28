@@ -22,7 +22,7 @@ bool isFuncLogger(StringRef name) {
 
 virtual bool runOnFunction(Function &F) {
 	if (isFuncLogger(F.getName())) return false;
-	Logger* Logger = Logger::get_instance("static_info.txt");
+	Logger* Logger = Logger::get_instance("info/static_info.txt");
 
 	Logger->get_stream() << "subgraph cluster_" << F.getName() << 
 	"{\nnode [style=filled];\n" <<

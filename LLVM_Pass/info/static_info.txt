@@ -1,0 +1,290 @@
+digraph LLVM {
+subgraph cluster_fact{
+node [style=filled];
+label = "fact"
+subgraph cluster_0{
+style=filled;
+color=pink;
+node [style=filled,color=white];
+4814660800[label = "  %2 = alloca i64, align 8", ]
+4814661040[label = "  %3 = alloca i64, align 8", ]
+4814662464[label = "  %4 = alloca i64, align 8", ]
+4814660944[label = "  store i64 %0, i64* %2, align 8", ]
+4814661184[label = "  store i64 0, i64* %3, align 8", ]
+4814661472[label = "  %5 = load i64, i64* %2, align 8", ]
+4814661600[label = "  %6 = icmp ult i64 %5, 2", ]
+4814662240[label = "  br i1 %6, label %7, label %8", ]
+label = "process %1"
+}
+4814660800 -> 4814660800[color = "purple", style = "dotted"]
+4814660800 -> 4814661040[color = "purple", style = "dotted"]
+4814661040 -> 4814662464[color = "purple", style = "dotted"]
+4814662464 -> 4814660944[color = "purple", style = "dotted"]
+4814660944 -> 4814661184[color = "purple", style = "dotted"]
+4814661184 -> 4814661472[color = "purple", style = "dotted"]
+4814661472 -> 4814661600[color = "purple", style = "dotted"]
+4814661600 -> 4814662240[color = "purple", style = "dotted"]
+
+subgraph cluster_1{
+style=filled;
+color=pink;
+node [style=filled,color=white];
+4814662368[label = "  store i64 1, i64* %3, align 8", ]
+4814662080[label = "  br label %15", ]
+label = "process %7"
+}
+4814660800 -> 4814662368[color = "purple", style = "dotted"]
+4814662368 -> 4814662080[color = "purple", style = "dotted"]
+
+subgraph cluster_2{
+style=filled;
+color=pink;
+node [style=filled,color=white];
+4814662576[label = "  %9 = load i64, i64* %2, align 8", ]
+4814662704[label = "  %10 = sub i64 %9, 1", ]
+4814662832[label = "  %11 = call i64 @fact(i64 %10)", ]
+4814662976[label = "  store i64 %11, i64* %4, align 8", ]
+4814663072[label = "  %12 = load i64, i64* %2, align 8", ]
+4814663168[label = "  %13 = load i64, i64* %4, align 8", ]
+4814663296[label = "  %14 = mul i64 %12, %13", ]
+4814663424[label = "  store i64 %14, i64* %3, align 8", ]
+4814663520[label = "  br label %15", ]
+label = "process %8"
+}
+4814660800 -> 4814662576[color = "purple", style = "dotted"]
+4814662576 -> 4814662704[color = "purple", style = "dotted"]
+4814662704 -> 4814662832[color = "purple", style = "dotted"]
+4814662832 -> 4814662976[color = "purple", style = "dotted"]
+4814662976 -> 4814663072[color = "purple", style = "dotted"]
+4814663072 -> 4814663168[color = "purple", style = "dotted"]
+4814663168 -> 4814663296[color = "purple", style = "dotted"]
+4814663296 -> 4814663424[color = "purple", style = "dotted"]
+4814663424 -> 4814663520[color = "purple", style = "dotted"]
+
+subgraph cluster_3{
+style=filled;
+color=pink;
+node [style=filled,color=white];
+4814663616[label = "  %16 = load i64, i64* %3, align 8", ]
+4814663840[label = "  ret i64 %16", ]
+label = "process %15"
+}
+4814660800 -> 4814663616[color = "purple", style = "dotted"]
+4814663616 -> 4814663840[color = "purple", style = "dotted"]
+
+4814660800 -> 4814663072 [label = "%2"color = "darkblue"]
+4814660800 -> 4814662576 [label = "%2"color = "darkblue"]
+4814660800 -> 4814661472 [label = "%2"color = "darkblue"]
+4814660800 -> 4814660944 [label = "%2"color = "darkblue"]
+4814661040 -> 4814663616 [label = "%3"color = "darkblue"]
+4814661040 -> 4814663424 [label = "%3"color = "darkblue"]
+4814661040 -> 4814662368 [label = "%3"color = "darkblue"]
+4814661040 -> 4814661184 [label = "%3"color = "darkblue"]
+4814662464 -> 4814663168 [label = "%4"color = "darkblue"]
+4814662464 -> 4814662976 [label = "%4"color = "darkblue"]
+4814661472 -> 4814661600 [label = "%5"color = "darkblue"]
+4814661600 -> 4814662240 [label = "%6"color = "darkblue"]
+4814662576 -> 4814662704 [label = "%9"color = "darkblue"]
+4814662704 -> 4814662832 [label = "%10"color = "darkblue"]
+4814662832 -> 4814662976 [label = "%11"color = "darkblue"]
+4814663072 -> 4814663296 [label = "%12"color = "darkblue"]
+4814663168 -> 4814663296 [label = "%13"color = "darkblue"]
+4814663296 -> 4814663424 [label = "%14"color = "darkblue"]
+4814663616 -> 4814663840 [label = "%16"color = "darkblue"]
+color=blue
+}
+subgraph cluster_main{
+node [style=filled];
+label = "main"
+subgraph cluster_0{
+style=filled;
+color=pink;
+node [style=filled,color=white];
+4814665760[label = "  %3 = alloca i32, align 4", ]
+4814664144[label = "  %4 = alloca i32, align 4", ]
+4814664384[label = "  %5 = alloca i8**, align 8", ]
+4814668096[label = "  %6 = alloca i64, align 8", ]
+4814664048[label = "  store i32 0, i32* %3, align 4", ]
+4814664288[label = "  store i32 %0, i32* %4, align 4", ]
+4814664528[label = "  store i8** %1, i8*** %5, align 8", ]
+4814664688[label = "  %7 = load i32, i32* %4, align 4", ]
+4814664816[label = "  %8 = icmp ne i32 %7, 2", ]
+4814665072[label = "  br i1 %8, label %9, label %11", ]
+label = "process %2"
+}
+4814665760 -> 4814665760[color = "purple", style = "dotted"]
+4814665760 -> 4814664144[color = "purple", style = "dotted"]
+4814664144 -> 4814664384[color = "purple", style = "dotted"]
+4814664384 -> 4814668096[color = "purple", style = "dotted"]
+4814668096 -> 4814664048[color = "purple", style = "dotted"]
+4814664048 -> 4814664288[color = "purple", style = "dotted"]
+4814664288 -> 4814664528[color = "purple", style = "dotted"]
+4814664528 -> 4814664688[color = "purple", style = "dotted"]
+4814664688 -> 4814664816[color = "purple", style = "dotted"]
+4814664816 -> 4814665072[color = "purple", style = "dotted"]
+
+subgraph cluster_1{
+style=filled;
+color=pink;
+node [style=filled,color=white];
+4814667024[label = "  %10 = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([35 x i8], [35 x i8]* @.str, i64 0, i64 0))", ]
+4814667824[label = "  store i32 1, i32* %3, align 4", ]
+4814667920[label = "  br label %28", ]
+label = "process %9"
+}
+4814665760 -> 4814667024[color = "purple", style = "dotted"]
+4814667024 -> 4814667824[color = "purple", style = "dotted"]
+4814667824 -> 4814667920[color = "purple", style = "dotted"]
+
+subgraph cluster_2{
+style=filled;
+color=pink;
+node [style=filled,color=white];
+4814668448[label = "  %12 = load i8**, i8*** %5, align 8", ]
+4814668576[label = "  %13 = getelementptr inbounds i8*, i8** %12, i64 1", ]
+4814668768[label = "  %14 = load i8*, i8** %13, align 8", ]
+4814668896[label = "  %15 = call i32 @atoi(i8* %14)", ]
+4814669008[label = "  %16 = sext i32 %15 to i64", ]
+4814669136[label = "  store i64 %16, i64* %6, align 8", ]
+4814669488[label = "  %17 = call i32* @__error()", ]
+4814669600[label = "  %18 = load i32, i32* %17, align 4", ]
+4814669728[label = "  %19 = icmp eq i32 %18, 0", ]
+4814670112[label = "  br i1 %19, label %20, label %25", ]
+label = "process %11"
+}
+4814665760 -> 4814668448[color = "purple", style = "dotted"]
+4814668448 -> 4814668576[color = "purple", style = "dotted"]
+4814668576 -> 4814668768[color = "purple", style = "dotted"]
+4814668768 -> 4814668896[color = "purple", style = "dotted"]
+4814668896 -> 4814669008[color = "purple", style = "dotted"]
+4814669008 -> 4814669136[color = "purple", style = "dotted"]
+4814669136 -> 4814669488[color = "purple", style = "dotted"]
+4814669488 -> 4814669600[color = "purple", style = "dotted"]
+4814669600 -> 4814669728[color = "purple", style = "dotted"]
+4814669728 -> 4814670112[color = "purple", style = "dotted"]
+
+subgraph cluster_3{
+style=filled;
+color=pink;
+node [style=filled,color=white];
+4814669952[label = "  %21 = load i64, i64* %6, align 8", ]
+4814670480[label = "  %22 = load i64, i64* %6, align 8", ]
+4814670608[label = "  %23 = call i64 @fact(i64 %22)", ]
+4814671104[label = "  %24 = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([17 x i8], [17 x i8]* @.str.1, i64 0, i64 0), i64 %21, i64 %23)", ]
+4814670896[label = "  br label %27", ]
+label = "process %20"
+}
+4814665760 -> 4814669952[color = "purple", style = "dotted"]
+4814669952 -> 4814670480[color = "purple", style = "dotted"]
+4814670480 -> 4814670608[color = "purple", style = "dotted"]
+4814670608 -> 4814671104[color = "purple", style = "dotted"]
+4814671104 -> 4814670896[color = "purple", style = "dotted"]
+
+subgraph cluster_4{
+style=filled;
+color=pink;
+node [style=filled,color=white];
+4814671248[label = "  %26 = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([35 x i8], [35 x i8]* @.str, i64 0, i64 0))", ]
+4814671392[label = "  store i32 1, i32* %3, align 4", ]
+4814671488[label = "  br label %28", ]
+label = "process %25"
+}
+4814665760 -> 4814671248[color = "purple", style = "dotted"]
+4814671248 -> 4814671392[color = "purple", style = "dotted"]
+4814671392 -> 4814671488[color = "purple", style = "dotted"]
+
+subgraph cluster_5{
+style=filled;
+color=pink;
+node [style=filled,color=white];
+4814671616[label = "  store i32 0, i32* %3, align 4", ]
+4814671712[label = "  br label %28", ]
+label = "process %27"
+}
+4814665760 -> 4814671616[color = "purple", style = "dotted"]
+4814671616 -> 4814671712[color = "purple", style = "dotted"]
+
+subgraph cluster_6{
+style=filled;
+color=pink;
+node [style=filled,color=white];
+4814671808[label = "  %29 = load i32, i32* %3, align 4", ]
+4814671904[label = "  ret i32 %29", ]
+label = "process %28"
+}
+4814665760 -> 4814671808[color = "purple", style = "dotted"]
+4814671808 -> 4814671904[color = "purple", style = "dotted"]
+
+4814665760 -> 4814671808 [label = "%3"color = "darkblue"]
+4814665760 -> 4814671616 [label = "%3"color = "darkblue"]
+4814665760 -> 4814671392 [label = "%3"color = "darkblue"]
+4814665760 -> 4814667824 [label = "%3"color = "darkblue"]
+4814665760 -> 4814664048 [label = "%3"color = "darkblue"]
+4814664144 -> 4814664688 [label = "%4"color = "darkblue"]
+4814664144 -> 4814664288 [label = "%4"color = "darkblue"]
+4814664384 -> 4814668448 [label = "%5"color = "darkblue"]
+4814664384 -> 4814664528 [label = "%5"color = "darkblue"]
+4814668096 -> 4814670480 [label = "%6"color = "darkblue"]
+4814668096 -> 4814669952 [label = "%6"color = "darkblue"]
+4814668096 -> 4814669136 [label = "%6"color = "darkblue"]
+4814664688 -> 4814664816 [label = "%7"color = "darkblue"]
+4814664816 -> 4814665072 [label = "%8"color = "darkblue"]
+4814668448 -> 4814668576 [label = "%12"color = "darkblue"]
+4814668576 -> 4814668768 [label = "%13"color = "darkblue"]
+4814668768 -> 4814668896 [label = "%14"color = "darkblue"]
+4814668896 -> 4814669008 [label = "%15"color = "darkblue"]
+4814669008 -> 4814669136 [label = "%16"color = "darkblue"]
+4814669488 -> 4814669600 [label = "%17"color = "darkblue"]
+4814669600 -> 4814669728 [label = "%18"color = "darkblue"]
+4814669728 -> 4814670112 [label = "%19"color = "darkblue"]
+4814669952 -> 4814671104 [label = "%21"color = "darkblue"]
+4814670480 -> 4814670608 [label = "%22"color = "darkblue"]
+4814670608 -> 4814671104 [label = "%23"color = "darkblue"]
+4814671808 -> 4814671904 [label = "%29"color = "darkblue"]
+color=blue
+}
+subgraph cluster_logop{
+node [style=filled];
+label = "logop"
+subgraph cluster_0{
+style=filled;
+color=pink;
+node [style=filled,color=white];
+4814672080[label = "  %4 = alloca i32, align 4", ]
+4814672320[label = "  %5 = alloca i32, align 4", ]
+4814672560[label = "  %6 = alloca i32, align 4", ]
+4814672224[label = "  store i32 %0, i32* %4, align 4", ]
+4814672464[label = "  store i32 %1, i32* %5, align 4", ]
+4814672704[label = "  store i32 %2, i32* %6, align 4", ]
+4814673072[label = "  %7 = load i32, i32* %4, align 4", ]
+4814673168[label = "  %8 = load i32, i32* %5, align 4", ]
+4814673264[label = "  %9 = load i32, i32* %6, align 4", ]
+4814673696[label = "  %10 = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([22 x i8], [22 x i8]* @.str.2, i64 0, i64 0), i32 %7, i32 %8, i32 %9)", ]
+4814208480[label = "  ret void", ]
+label = "process %3"
+}
+4814672080 -> 4814672080[color = "purple", style = "dotted"]
+4814672080 -> 4814672320[color = "purple", style = "dotted"]
+4814672320 -> 4814672560[color = "purple", style = "dotted"]
+4814672560 -> 4814672224[color = "purple", style = "dotted"]
+4814672224 -> 4814672464[color = "purple", style = "dotted"]
+4814672464 -> 4814672704[color = "purple", style = "dotted"]
+4814672704 -> 4814673072[color = "purple", style = "dotted"]
+4814673072 -> 4814673168[color = "purple", style = "dotted"]
+4814673168 -> 4814673264[color = "purple", style = "dotted"]
+4814673264 -> 4814673696[color = "purple", style = "dotted"]
+4814673696 -> 4814208480[color = "purple", style = "dotted"]
+
+4814672080 -> 4814673072 [label = "%4"color = "darkblue"]
+4814672080 -> 4814672224 [label = "%4"color = "darkblue"]
+4814672320 -> 4814673168 [label = "%5"color = "darkblue"]
+4814672320 -> 4814672464 [label = "%5"color = "darkblue"]
+4814672560 -> 4814673264 [label = "%6"color = "darkblue"]
+4814672560 -> 4814672704 [label = "%6"color = "darkblue"]
+4814673072 -> 4814673696 [label = "%7"color = "darkblue"]
+4814673168 -> 4814673696 [label = "%8"color = "darkblue"]
+4814673264 -> 4814673696 [label = "%9"color = "darkblue"]
+color=blue
+}
+
+}
