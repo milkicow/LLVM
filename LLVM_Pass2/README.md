@@ -8,13 +8,13 @@ Create pass plugin
 ```
 clang++ Pass_collect_instr.cpp -undefined dynamic_lookup -fPIC -shared -I$(llvm-config --includedir) -o libPass.so
 ```
-Apply pass only for app.c file. Statistic will be collected only from this file
+Apply pass only for app.cpp file. Statistic will be collected only from this file
 ```
-clang -fpass-plugin=./libPass.so ../SDL/app.c -O2 -c
+clang++ -fpass-plugin=./libPass.so ../SDL/app.cpp -O1 -c
 ```
 Compile and run application
 ```
-clang ../SDL/main.c ../SDL/sim.c logger.c app.o -lSDL2
+clang++ ../SDL/main.cpp ../SDL/sim.cpp logger.cpp app.o -lSDL2
 ./a.out > tmp
 ```
 
