@@ -3,7 +3,7 @@
 #define X_SIZE 50
 #define Y_SIZE 25
 
-int neighbors(char alive[Y_SIZE][X_SIZE], int cur_x, int cur_y) {
+int neighbors(char *alive, int cur_x, int cur_y) {
     int n = 0;
 
     int table_x = 0;
@@ -28,87 +28,90 @@ int neighbors(char alive[Y_SIZE][X_SIZE], int cur_x, int cur_y) {
                 continue;
             }
 
-            n += alive[table_y][table_x];
+            n += alive[table_y * X_SIZE + table_x];
         }
     }
     return n;
 }
 
-void copy(char alive[Y_SIZE][X_SIZE], char alive_next[Y_SIZE][X_SIZE]) {
-    for (int y = 0; y < Y_SIZE; ++y) {
-        for (int x = 0; x < X_SIZE; ++x) {
-            alive[y][x] = alive_next[y][x];
-            alive_next[y][x] = 0;
-        }
-    }
+void swap(char **arr1, char **arr2) {
+    char *tmp = *arr1;
+    *arr1 = *arr2;
+    *arr2 = tmp;
 }
 
-void step(char alive[Y_SIZE][X_SIZE], char alive_next[Y_SIZE][X_SIZE]) {
+void step(char *alive, char *alive_next) {
     int alive_neighbors = 0;
     for (int y = 0; y < Y_SIZE; ++y) {
         for (int x = 0; x < X_SIZE; ++x) {
             alive_neighbors = neighbors(alive, x, y);
 
-            if (alive[y][x]) {
+            if (alive[y * X_SIZE + x]) {
                 if (alive_neighbors == 2 || alive_neighbors == 3) {
-                    alive_next[y][x] = 1;
+                    alive_next[y * X_SIZE + x] = 1;
                 } else {
-                    alive_next[y][x] = 0;
+                    alive_next[y * X_SIZE + x] = 0;
                 }
             } else {
                 if (alive_neighbors == 3) {
-                    alive_next[y][x] = 1;
+                    alive_next[y * X_SIZE + x] = 1;
                 } else {
-                    alive_next[y][x] = 0;
+                    alive_next[y * X_SIZE + x] = 0;
                 }
             }
         }
     }
-    copy(alive, alive_next);
 }
 
 void app() {
-    char alive[Y_SIZE][X_SIZE] = {
-        // // Glider
-        // {0, 0, 0, 0, 0},
-        // {0, 1, 0, 0, 0},
-        // {0, 0, 1, 1, 0},
-        // {0, 1, 1, 0, 0},
+    char a[X_SIZE * Y_SIZE] = {};
 
-        // // Heavy-weight spaceship
-        // {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0},
-        // {0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 1, 1},
-        // {0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0},
-        // {0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0},
+    a[1 * X_SIZE + 26] = 1;
+    a[2 * X_SIZE + 24] = 1;
+    a[2 * X_SIZE + 26] = 1;
+    a[3 * X_SIZE + 14] = 1;
+    a[3 * X_SIZE + 15] = 1;
+    a[3 * X_SIZE + 22] = 1;
+    a[3 * X_SIZE + 23] = 1;
+    a[3 * X_SIZE + 36] = 1;
+    a[3 * X_SIZE + 37] = 1;
+    a[4 * X_SIZE + 13] = 1;
+    a[4 * X_SIZE + 17] = 1;
+    a[4 * X_SIZE + 22] = 1;
+    a[4 * X_SIZE + 23] = 1;
+    a[4 * X_SIZE + 36] = 1;
+    a[4 * X_SIZE + 37] = 1;
+    a[5 * X_SIZE + 2] = 1;
+    a[5 * X_SIZE + 3] = 1;
+    a[5 * X_SIZE + 12] = 1;
+    a[5 * X_SIZE + 18] = 1;
+    a[5 * X_SIZE + 22] = 1;
+    a[5 * X_SIZE + 23] = 1;
+    a[6 * X_SIZE + 2] = 1;
+    a[6 * X_SIZE + 3] = 1;
+    a[6 * X_SIZE + 12] = 1;
+    a[6 * X_SIZE + 16] = 1;
+    a[6 * X_SIZE + 18] = 1;
+    a[6 * X_SIZE + 19] = 1;
+    a[6 * X_SIZE + 24] = 1;
+    a[6 * X_SIZE + 26] = 1;
+    a[7 * X_SIZE + 12] = 1;
+    a[7 * X_SIZE + 18] = 1;
+    a[7 * X_SIZE + 26] = 1;
+    a[8 * X_SIZE + 13] = 1;
+    a[8 * X_SIZE + 17] = 1;
+    a[9 * X_SIZE + 14] = 1;
+    a[9 * X_SIZE + 15] = 1;
 
-        // Gosper glider gun
-        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-         0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-         0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0,
-         0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0},
-        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0,
-         0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0},
-        {0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0,
-         0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-        {0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 1,
-         0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0,
-         0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0,
-         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0,
-         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-    };
-    char alive_next[Y_SIZE][X_SIZE] = {};
+    char a_next[X_SIZE * Y_SIZE] = {};
+
+    char *alive = a;
+    char *alive_next = a_next;
 
     for (int s = 0; s < 1000; ++s) {
         for (int y = 0; y < Y_SIZE; ++y) {
             for (int x = 0; x < X_SIZE; ++x) {
-                if (!alive[y][x]) {
+                if (!alive[y * X_SIZE + x]) {
                     simPutDisplayPixel(x, y, 0xFFFFFFFF, 40);
                 } else {
                     simPutDisplayPixel(x, y, 0xFF000000, 40);
@@ -116,6 +119,8 @@ void app() {
             }
         }
         simFlush();
+
         step(alive, alive_next);
+        swap(&alive, &alive_next);
     }
 }
