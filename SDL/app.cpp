@@ -1,4 +1,4 @@
-#include "sim.h"
+#include "sim.hpp"
 
 #define X_SIZE 50
 #define Y_SIZE 25

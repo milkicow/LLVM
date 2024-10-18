@@ -10,11 +10,11 @@ clang++ Pass_collect_instr.cpp -undefined dynamic_lookup -fPIC -shared -I$(llvm-
 ```
 Apply pass only for app.c file. Statistic will be collected only from this file
 ```
-clang -fpass-plugin=./libPass.so ../SDL/app.c -O2 -c
+clang++ -fpass-plugin=./libPass.so ../SDL/app.cpp -O2 -c
 ```
 Compile and run application
 ```
-clang ../SDL/main.c ../SDL/sim.c logger.c app.o -lSDL2
+clang++ ../SDL/main.cpp ../SDL/sim.cpp logger.cpp app.o -lSDL2
 ./a.out > tmp
 ```
 
