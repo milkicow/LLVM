@@ -1,5 +1,6 @@
 #define SIM_X_SIZE 2000
 #define SIM_Y_SIZE 1000
+#define PIXEL_SCALE 40
 
 #define X_SIZE 50
 #define Y_SIZE 25
