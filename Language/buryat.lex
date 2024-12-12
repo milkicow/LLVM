@@ -11,6 +11,8 @@ comments        [#].*\n
 whitespaces     [ \n\t]
 
 word            [A-Za-z_]+
+cyrillic_word   [АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯабвгдеёжзийклмнопрстуфхцчшщъыьэюя_үө]+
+
 number          [0-9]+
 
 less            [<]
@@ -30,19 +32,19 @@ minus           [-]
 %%
 {comments}|{whitespaces} {}
 
-"jump"  { return JUMP; }
+"урагша"  { return JUMP; }
 
-"if"    { return IF_BEGIN; }
-"then"  { return IF_THEN; }
-"else"  { return ELSE; }
+"haa"       { return IF_BEGIN; }
+"тиихэдээ"  { return IF_THEN; }
+"ондоогоор" { return ELSE; }
 
-"put"   { return PUT_PIXEL; }
-"flush" { return FLUSH; }
+"зураха"    { return PUT_PIXEL; }
+"сэбэр"     { return FLUSH; }
 
 "&&"    { return AND; }
 "||"    { return OR; }
 
-{word} {
+{word}|{cyrillic_word} {
     yylval = strdup(yytext);
     return IDENTIFIER;
 }
@@ -67,10 +69,10 @@ minus           [-]
 {plus} { return PLUS; }
 {minus} { return MINUS; }
 
-"routine begin" { return FUNCTION_BEGIN; }
-"routine end"   { return FUNCTION_END; }
+"журам эхилхэ"      { return FUNCTION_BEGIN; }
+"журам түгэсхэл"    { return FUNCTION_END; }
 
-"call routine"  { return FUNCTION_CALL; }
+"дуудалгануудай журам"  { return FUNCTION_CALL; }
 
 . {
     return *yytext;
