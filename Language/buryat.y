@@ -52,6 +52,8 @@
     std::unordered_map<std::string, ValueT> Identifiers;
     std::unordered_map<std::string, ArrayT> Arrays;
     std::unordered_map<std::string, llvm::BasicBlock*> BBs;
+
+    std::string convertCyrillic(const char* cyrillic_string);
 %}
 
 %token NUMBER
@@ -63,13 +65,11 @@
 %token FUNCTION_CALL
 %token JUMP
 %token IF_BEGIN IF_THEN ELSE
-/* %token SWAP */
 %token PUT_PIXEL FLUSH
 %token AND OR
 
 %%
 
-/* START: PROGRAM { YYACCEPT;} */
 
 START:    PROGRAM { YYACCEPT; }
 ;
@@ -92,7 +92,7 @@ VARIABLE_DECLARATION: IDENTIFIER '=' NUMBER ';' {
     ArrayType *arrayType = ArrayType::get(builder->getInt32Ty(), array_size);
     module->getOrInsertGlobal((char*) $1, arrayType);
 
-    int *array = new int[array_size];
+    int *array = new int[array_size]();
     Arrays[(char*) $1] = {module->getNamedGlobal((char*) $1), array, array_size};
 }
 ;
@@ -105,7 +105,7 @@ FUNCTION_DECLARATION:   FUNCTION_BEGIN IDENTIFIER {
     }
     currentFunction = func;
 
-    BasicBlock *entryBB = BasicBlock::Create(context, "entry", currentFunction);
+    BasicBlock *entryBB = BasicBlock::Create(context, "түрүүшын", currentFunction);
     builder->SetInsertPoint(entryBB);
 }
     BODY FUNCTION_END {
@@ -118,7 +118,6 @@ BODY:   ASSIGNMENT {}
     | LABEL {}
     | JUMP_STATEMENT {}
     | FUNCTION_CALL_STATEMENT {}
-    /* | SWAP_STATEMENT {} */
     | PUT_PIXEL_STATEMENT {}
     | FLUSH_STATEMENT {}
     | BODY FUNCTION_CALL_STATEMENT {}
@@ -126,28 +125,11 @@ BODY:   ASSIGNMENT {}
     | BODY JUMP_STATEMENT {}
     | BODY LABEL {}
     | BODY IF_STATEMENT {}
-    /* | BODY SWAP_STATEMENT {} */
     | BODY PUT_PIXEL_STATEMENT {}
     | BODY FLUSH_STATEMENT {}
 ;
 
 ASSIGNMENT: MODIFIABLE_PRIMARY '=' EXPRESSION ';' { builder->CreateStore($3, $1); }
-;
-
-/* SWAP_STATEMENT: SWAP IDENTIFIER IDENTIFIER ';' {
-    outs() << "SWAP\n";
-
-    auto &array1 = Arrays[(char *) $2];
-    auto &array2 = Arrays[(char *) $3];
-    for (size_t i = 0; i < array1.size; ++i) {
-        int tmp = array1.array[i];
-        array1.array[i] = array2.array[i];
-        array2.array[i] = tmp;
-    }
-    // auto tmp = Arrays[(char *) $3];
-    // Arrays[(char *) $3] = Arrays[(char *) $2];
-    // Arrays[(char *) $2] = tmp;
-} */
 ;
 
 JUMP_STATEMENT:   JUMP IDENTIFIER ';' {
@@ -246,6 +228,7 @@ PRIMARY: NUMBER {
 ;
 
 MODIFIABLE_PRIMARY: IDENTIFIER {
+    outs() << "IDETIFIER: " << (char*) $1 << "\n";
     $$ = builder->CreateConstGEP1_32(builder->getInt32Ty(), Identifiers[(char*) $1].llvm, 0);
 }
 | IDENTIFIER '[' EXPRESSION ']' {
@@ -326,7 +309,7 @@ int main(int argc, char **argv)
     simInit();
 
 	std::vector<GenericValue> noargs;
-    Function *mainFunc = module->getFunction("main");
+    Function *mainFunc = module->getFunction("аба");
     if (mainFunc == nullptr) {
 	    outs() << "Can't find main\n";
         return -1;
