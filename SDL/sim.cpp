@@ -73,7 +73,7 @@ extern "C" void simFlush() {
     SDL_RenderPresent(Renderer);
 }
 
-extern "C" void simPutDisplayPixel(int cur_x, int cur_y, int argb, int scale) {
+extern "C" void simPutDisplayPixel(int cur_x, int cur_y, int argb) {
     assert(0 <= cur_x && cur_x < SIM_X_SIZE && "Out of range");
     assert(0 <= cur_y && cur_y < SIM_Y_SIZE && "Out of range");
 
@@ -82,6 +82,7 @@ extern "C" void simPutDisplayPixel(int cur_x, int cur_y, int argb, int scale) {
     Uint8 g = (argb >> 8) & 0xFF;
     Uint8 b = argb & 0xFF;
 
+    int scale = 40;
     for (int y = cur_y * scale; y < (cur_y + 1) * scale; ++y) {
         for (int x = cur_x * scale; x < (cur_x + 1) * scale; ++x) {
             SDL_SetRenderDrawColor(Renderer, r, g, b, a);

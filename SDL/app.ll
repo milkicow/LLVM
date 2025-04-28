@@ -115,7 +115,7 @@ define void @_Z3appv() local_unnamed_addr #0 {
   %58 = icmp eq i8 %57, 0
   %59 = trunc nuw nsw i64 %54 to i32
   %60 = select i1 %58, i32 -1, i32 -16777216
-  call void @simPutDisplayPixel(i32 noundef %59, i32 noundef %16, i32 noundef %60, i32 noundef 40)
+  call void @simPutDisplayPixel(i32 noundef %59, i32 noundef %16, i32 noundef %60)
   %61 = add nuw nsw i64 %54, 1
   %62 = icmp eq i64 %61, 50
   br i1 %62, label %50, label %53, !llvm.loop !14
@@ -127,7 +127,7 @@ declare void @llvm.lifetime.start.p0(i64 immarg, ptr nocapture) #1
 ; Function Attrs: mustprogress nocallback nofree nounwind willreturn memory(argmem: write)
 declare void @llvm.memset.p0.i64(ptr nocapture writeonly, i8, i64, i1 immarg) #2
 
-declare void @simPutDisplayPixel(i32 noundef, i32 noundef, i32 noundef, i32 noundef) local_unnamed_addr #3
+declare void @simPutDisplayPixel(i32 noundef, i32 noundef, i32 noundef) local_unnamed_addr #3
 
 ; Function Attrs: mustprogress nocallback nofree nosync nounwind willreturn memory(argmem: readwrite)
 declare void @llvm.lifetime.end.p0(i64 immarg, ptr nocapture) #1
@@ -149,7 +149,7 @@ attributes #4 = { nounwind }
 !1 = !{i32 8, !"PIC Level", i32 2}
 !2 = !{i32 7, !"uwtable", i32 1}
 !3 = !{i32 7, !"frame-pointer", i32 1}
-!4 = !{!"Homebrew clang version 19.1.0"}
+!4 = !{!"Homebrew clang version 19.1.7"}
 !5 = !{!6, !6, i64 0}
 !6 = !{!"omnipotent char", !7, i64 0}
 !7 = !{!"Simple C++ TBAA"}

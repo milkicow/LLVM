@@ -1,8 +1,6 @@
 X_SIZE = 50;
 Y_SIZE = 25;
 
-PIXEL_SCALE = 40;
-
 alive[1250];
 alive_next[1250];
 
@@ -256,11 +254,11 @@ routine begin main
                 if alive[y * X_SIZE + x] then black_cell else white_cell
                 black_cell:
                     counter_black_cells = counter_black_cells + 1;
-                    put(x, y, 4278190080, PIXEL_SCALE);
+                    put(x, y, 4278190080);
                     jump color_cell_endif;
                 white_cell:
                     counter_white_cells = counter_white_cells + 1;
-                    put(x, y, 4294967295, PIXEL_SCALE);
+                    put(x, y, 4294967295);
                     jump color_cell_endif;
 
                 color_cell_endif:

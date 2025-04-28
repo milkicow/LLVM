@@ -83,9 +83,9 @@ void app() {
         for (int y = 0; y < Y_SIZE; ++y) {
             for (int x = 0; x < X_SIZE; ++x) {
                 if (!alive[y * X_SIZE + x]) {
-                    simPutDisplayPixel(x, y, 0xFFFFFFFF, PIXEL_SCALE);
+                    simPutDisplayPixel(x, y, 0xFFFFFFFF);
                 } else {
-                    simPutDisplayPixel(x, y, 0xFF000000, PIXEL_SCALE);
+                    simPutDisplayPixel(x, y, 0xFF000000);
                 }
             }
         }

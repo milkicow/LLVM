@@ -190,8 +190,8 @@ FUNCTION_CALL_STATEMENT:    FUNCTION_CALL IDENTIFIER ';' {
 }
 ;
 
-PUT_PIXEL_STATEMENT:    PUT_PIXEL '(' EXPRESSION ',' EXPRESSION ',' EXPRESSION ',' EXPRESSION ')' ';' {
-    Value *args[] = {$3, $5, $7, $9};
+PUT_PIXEL_STATEMENT:    PUT_PIXEL '(' EXPRESSION ',' EXPRESSION ',' EXPRESSION ')' ';' {
+    Value *args[] = {$3, $5, $7};
     if (simPutDisplayPixelFunc.getCallee() == nullptr) {
         exit(EXIT_FAILURE);
     }
@@ -273,11 +273,11 @@ int main(int argc, char **argv)
 
 
     Type *voidType = Type::getVoidTy(context);
-    ArrayRef<Type *> int32x4Types = {Type::getInt32Ty(context), Type::getInt32Ty(context),
-                                     Type::getInt32Ty(context), Type::getInt32Ty(context)};
+    ArrayRef<Type *> int32x3Types = {Type::getInt32Ty(context), Type::getInt32Ty(context),
+                                     Type::getInt32Ty(context)};
 
     FunctionType *voidFuncType = FunctionType::get(voidType, false);
-    FunctionType *int32x4FuncType = FunctionType::get(voidType, int32x4Types, false);
+    FunctionType *int32x3FuncType = FunctionType::get(voidType, int32x3Types, false);
 
     simPutDisplayPixelFunc = module->getOrInsertFunction("llvm.arch52.putdisplaypixel", int32x3FuncType);
     simFlushFunc = module->getOrInsertFunction("llvm.arch52.flush", voidFuncType);

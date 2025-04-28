@@ -3,7 +3,6 @@ source_filename = "top"
 
 @X_SIZE = external global i32
 @Y_SIZE = external global i32
-@PIXEL_SCALE = external global i32
 @alive = external global [1250 x i32]
 @alive_next = external global [1250 x i32]
 @alive_neighbors = external global i32
@@ -602,8 +601,8 @@ white_cell:                                       ; preds = %x_loop_iteration
   br label %color_cell_endif
 
 color_cell_endif:                                 ; preds = %white_cell, %black_cell
-  %180 = load i32, ptr @x, align 4
-  %181 = add i32 %180, 1
-  store i32 %181, ptr @x, align 4
+  %178 = load i32, ptr @x, align 4
+  %179 = add i32 %178, 1
+  store i32 %179, ptr @x, align 4
   br label %x_loop
 }
